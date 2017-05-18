@@ -9,23 +9,34 @@ def EqDif (Y,t):
 	y = Y[2]
 	Vy = Y[3]
 	dxdt = Vx
-	dvxdt = 0
+	dvxdt = -k*(Vx**2)/m
 	dydt = Vy
-	dvydt = -g
+	dvydt = -(m*g + k*(Vy**2))/m
 	
 	return[dxdt,dvxdt,dydt,dvydt]
-tempo = np.arange(0,330,0.01)
-M = 1738510
-m = 1100
-k = 10000
-x = 1.7
-g = 9.8
-deltaT = 1
-I = M+k*x 
-Vy = +I*deltaT/m 
-Vx = (M/m)*deltaT/m 
+                  
+tempo = np.arange(0,19.8,0.01)
 
-y0 = [0,Vx,0,Vy]
+M = 1738510 # Força Muscular vezes sin(45)
+m = 1100    # Massa Hulk
+k = 10000   # Constante da 'Mola'
+x = 1.0     # Varição de alturas
+g = 9.8     # Gravidade
+deltaT = 1  # Tempo de Impulso
+
+# Forças Resultantes xy
+FRy = M+k*x*math.sin((math.pi)/4)
+V0y = FRy*deltaT/m
+
+FRx =(M + k*x*math.sin((math.pi)/4))
+V0x = (FRx/m)*deltaT
+
+# Força resistencia ar 
+dar = 1.2
+Ahulk = 6
+Cd = 0.75                  
+k = 0.5*Cd*Ahulk*1.2
+y0 = [0,V0x,0,V0y]
 Sol = odeint(EqDif,y0,tempo)
 
 plt.plot(tempo,Sol[:,2],)
