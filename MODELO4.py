@@ -1,21 +1,24 @@
-#MODELO HULK 3 
+#MODELO HULK 4
 
 import math
 from scipy.integrate import odeint
 import numpy as np
 import matplotlib.pyplot as plt
 
-def EqDif (Y,t):
-	x = Y[0]
-	Vx = Y[1]
-	y = Y[2]
-	Vy = Y[3]
-	dxdt = Vx
-	dvxdt = -k*(Vx**2)/m
-	dydt = Vy
-	dvydt = -(P + k*(Vy**2))/m
-	
-	return[dxdt,dvxdt,dydt,dvydt]
+def Impulso(y,t):
+        Qx = y[0]
+        Ix = y[1]
+        Qy = y[2]
+        Iy = y[3]
+        dQxdt = FRx + m*Vfat
+        dIxdt = 0
+        dQydt = FRy
+        dIydt = 0
+        return[dQxdt,dIxdt,dQydt,dIydt]
+        
+        
+        
+
                   
 # Condições do ambiente
 g = 9.8                     # Gravidade
@@ -50,38 +53,33 @@ V0y = FRy*deltaT/m              # velocidade inicial em y
 FRx =(M + Felpx - Fat)          # em x
 V0x = ((FRx)*deltaT + m*Vfat)/m # velocidade inicial em x
 
-# Força resistencia ar 
-dar = 1.2                       # Densidade do ar
-Ahulk = 6                       # Área do Hulk (Retângulo: 2x3)
-Cd = 0.75                       # Coeficiente de arrasto
-k = 0.5*Cd*Ahulk*1.2            # Constante simplificada ar
-
 #Resolução Odeint
 
-tempo = np.arange(0,19.8,0.01)  # Tempo de Durção do 1 Salto
-y0 = [0,V0x,0,V0y]              # Condições Iniciais
-Sol = odeint(EqDif,y0,tempo)    # Resolução Odeint
-
-plt.plot(tempo,Sol[:,2],)
-plt.xlabel("Tempo")
-plt.ylabel("altura")
-plt.title("Altura máxima por tempo")
-plt.show()
+tempo = np.arange(0,1,0.01)                                                           # Tempo de Durção do 1 Salto
+y0 = [m*Vfat,(FRx + m*Vfat)*delaT,0,FRy*deltaT]              # Condições Iniciais
+Sol = odeint(Impulso,y0,tempo)                                                        # Resolução Odeint
 
 plt.plot(tempo,Sol[:,0],)
 plt.xlabel("Tempo")
-plt.ylabel("distância")
-plt.title("Distância máxima por tempo")
+plt.ylabel("Quantiadde de Movimento em x")
+plt.title("Qx por tempo")
 plt.show()
 
 plt.plot(tempo,Sol[:,1],)
 plt.xlabel("Tempo")
-plt.ylabel("Velocidade em x")
-plt.title("Velocidade em x por tempo")
+plt.ylabel("Impulso em x")
+plt.title("Impulsox por tempo")
+plt.show()
+
+plt.plot(tempo,Sol[:,2],)
+plt.xlabel("Tempo")
+plt.ylabel("Quantiadde de Movimento em y")
+plt.title("Qy por tempo")
 plt.show()
 
 plt.plot(tempo,Sol[:,3],)
 plt.xlabel("Tempo")
-plt.ylabel("Velocidade em y")
-plt.title("Velocidade em y por tempo")
+plt.ylabel("Impulso em y")
+plt.title("Impulsoy por tempo")
 plt.show()
+
