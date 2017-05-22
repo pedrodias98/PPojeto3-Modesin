@@ -61,7 +61,7 @@ k = 0.5*Cd*Ahulk*1.2            # Constante simplificada ar
 tempo = np.arange(0,19.8,0.01)  # Tempo de Durção do 1 Salto
 y0 = [0,V0x,0,V0y]              # Condições Iniciais
 Sol = odeint(EqDif,y0,tempo)    # Resolução Odeint
-
+print(Sol[:,1][-1])
 plt.plot(tempo,Sol[:,2],)
 plt.xlabel("Tempo")
 plt.ylabel("altura")

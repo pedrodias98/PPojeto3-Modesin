@@ -1,4 +1,5 @@
 #MODELO HULK 4
+#Impulso Inicial
 
 import math
 from scipy.integrate import odeint
@@ -7,19 +8,13 @@ import matplotlib.pyplot as plt
 
 def Impulso(y,t):
         Qx = y[0]
-        Ix = y[1]
-        Qy = y[2]
-        Iy = y[3]
-        dQxdt = FRx + m*Vfat
-        dIxdt = 0
+        Qy = y[1]
+        
+        dQxdt = FRx 
         dQydt = FRy
-        dIydt = 0
-        return[dQxdt,dIxdt,dQydt,dIydt]
-        
-        
-        
-
-                  
+       
+        return[dQxdt,dQydt]
+                          
 # Condições do ambiente
 g = 9.8                     # Gravidade
 
@@ -55,31 +50,20 @@ V0x = ((FRx)*deltaT + m*Vfat)/m # velocidade inicial em x
 
 #Resolução Odeint
 
-tempo = np.arange(0,1,0.01)                                                           # Tempo de Durção do 1 Salto
-y0 = [m*Vfat,(FRx + m*Vfat)*delaT,0,FRy*deltaT]              # Condições Iniciais
-Sol = odeint(Impulso,y0,tempo)                                                        # Resolução Odeint
+tempoI1 = np.arange(0,1,0.01)                                                           # Tempo de Durção do 1 Salto
+y0 = [m*Vfat,0]              # Condições Iniciais
+Imp1 = odeint(Impulso,y0,tempoI1)                                                        # Resolução Odeint
 
-plt.plot(tempo,Sol[:,0],)
+plt.plot(tempoI1,Imp1[:,0],)
 plt.xlabel("Tempo")
 plt.ylabel("Quantiadde de Movimento em x")
 plt.title("Qx por tempo")
 plt.show()
 
-plt.plot(tempo,Sol[:,1],)
-plt.xlabel("Tempo")
-plt.ylabel("Impulso em x")
-plt.title("Impulsox por tempo")
-plt.show()
 
-plt.plot(tempo,Sol[:,2],)
+plt.plot(tempoI1,Imp1[:,1],)
 plt.xlabel("Tempo")
 plt.ylabel("Quantiadde de Movimento em y")
 plt.title("Qy por tempo")
-plt.show()
-
-plt.plot(tempo,Sol[:,3],)
-plt.xlabel("Tempo")
-plt.ylabel("Impulso em y")
-plt.title("Impulsoy por tempo")
 plt.show()
 
