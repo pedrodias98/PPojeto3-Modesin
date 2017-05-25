@@ -1,0 +1,9 @@
+Distância Califórnia = 10.147 Km
+
+Tempo Total = 3,69 h
+
+Distância Por Salto = 763.837263012 m
+
+Tempo Por Salto  = 17, 5733 s
+
+Número de Saltos = 756
